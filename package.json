@@ -4,7 +4,8 @@
   "description": "discord bot",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "deploy": "node deploy-commands.js"
   },
   "repository": {
     "type": "git",
