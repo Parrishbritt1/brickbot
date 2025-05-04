@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { SlashCommandBuilder } from 'discord.js';
 
-export const BLACKJACK_COMMAND = new {
-    data: SlashCommandBuilder()
+export const BLACKJACK_COMMAND = {
+    data: new SlashCommandBuilder()
         .setName('bj')
         .setDescription('BlackJack'),
     async execute(interaction) {
