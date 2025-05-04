@@ -1,0 +1,24 @@
+{
+  "name": "brickbot",
+  "version": "1.0.0",
+  "description": "discord bot",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Parrishbritt1/brickbot.git"
+  },
+  "author": "Parrish",
+  "license": "ISC",
+  "dependencies": {
+    "discord-interactions": "^4.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  },
+  "bugs": {
+    "url": "https://github.com/Parrishbritt1/brickbot/issues"
+  },
+  "homepage": "https://github.com/Parrishbritt1/brickbot#readme"
+}
