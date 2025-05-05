@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
+import { BRICKBALL_ANSWERS } from './brickball-answers.js';
 
 export const BLACKJACK_COMMAND = {
     data: new SlashCommandBuilder()
@@ -15,5 +16,21 @@ export const BLACKJACK_COMMAND = {
             content: `Starting Blackjack - Take a seat!`,
             components: [row]
         })
+    }
+}
+
+export const BRICKBALL_COMMAND = {
+    data: new SlashCommandBuilder()
+        .setName('brickball')
+        .setDescription('Magic 8 brick ball')
+        .addStringOption(option =>
+            option.setName('question')
+                .setDescription('your question')
+                .setRequired(true)
+        ),
+    async execute(interaction) {
+        const question = interaction.options.getString('question');
+        const answer = BRICKBALL_ANSWERS[Math.floor(Math.random() * BRICKBALL_ANSWERS.length)];
+        await interaction.reply(`❓ **${question}**\n💬 **Answer:** ${answer}`);
     }
 }

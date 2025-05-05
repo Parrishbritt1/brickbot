@@ -1,8 +1,8 @@
 import { REST, Routes } from "discord.js";
-import { BLACKJACK_COMMAND } from "./commands.js";
+import { BLACKJACK_COMMAND, BRICKBALL_COMMAND } from "./commands.js";
 
 const rest = new REST().setToken(process.env.BOT_TOKEN);
-const commands = [BLACKJACK_COMMAND.data.toJSON()];
+const commands = [BLACKJACK_COMMAND.data.toJSON(), BRICKBALL_COMMAND.data.toJSON()];
 
 // deploy commands!
 (async () => {
