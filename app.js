@@ -51,25 +51,69 @@ client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isButton()) return;
 
     if (interaction.customId === 'join_table') {
-        if (players.has(interaction.userId)) {
+        if (players.has(interaction.user.id)) {
             await interaction.reply({ content: 'You already joined the table.', flags: MessageFlags.Ephemeral });
             return;
         }
     }
 
-    players.set(interaction.userId, { bet: null });
+    if (interaction.customId === 'leave_table') {
+        players.delete(interaction.user.id);
+
+        await interaction.reply({
+            content: '👋 You left the table.',
+            flags: MessageFlags.Ephemeral
+        });
+
+        // If no players left, clean up messages
+        if (players.size === 0) {
+            await deleteBotMessages(interaction.channel);
+        }
+    }
+
+    players.set(interaction.user.id, { bet: null });
 
     const bet_10 = new ButtonBuilder().setCustomId(`bet_10`).setLabel('Bet 10').setStyle(ButtonStyle.Primary);
     const bet_50 = new ButtonBuilder().setCustomId(`bet_50`).setLabel('Bet 50').setStyle(ButtonStyle.Primary);
     const bet_100 = new ButtonBuilder().setCustomId(`bet_100`).setLabel('Bet 100').setStyle(ButtonStyle.Primary);
-    const row = new ActionRowBuilder().addComponents(bet_10, bet_50, bet_100);
+    const leave_table = new ButtonBuilder().setCustomId(`leave_table`).setLabel('Leave Table').setStyle(ButtonStyle.Danger);
+    const row = new ActionRowBuilder().addComponents(bet_10, bet_50, bet_100, leave_table);
 
-    await interaction.reply({
-        content: '✅ You joined the table! Now place your bet:',
-        components: [row],
-        flags: MessageFlags.Ephemeral
-    });
+    try {
+        await interaction.reply({
+            content: '✅ You joined the table! Now place your bet:',
+            components: [row],
+            flags: MessageFlags.Ephemeral
+        });
+    } catch (error) {
+        console.error('Failed to join the table:', error);
+    }
 });
+
 
 // Log in to Discord with your client's token
 client.login(process.env.BOT_TOKEN);
+
+async function deleteBotMessages(channel) {
+    try {
+        let hasMore = true;
+
+        while (hasMore) {
+            const messages = await channel.messages.fetch({ limit: 100 });
+            const botMessages = messages.filter(msg => msg.author.bot);
+
+            if (botMessages.size === 0) {
+                hasMore = false;
+            } else {
+                await channel.bulkDelete(botMessages, true);
+            }
+
+            // Avoid hitting rate limits
+            await new Promise(res => setTimeout(res, 1000));
+        }
+
+        console.log('✅ Bot messages cleared.');
+    } catch (error) {
+        console.error('❌ Failed to delete bot messages:', error);
+    }
+}
