@@ -1,18 +1,17 @@
 import { REST, Routes } from "discord.js";
-import { BLACKJACK_COMMAND, BRICKBALL_COMMAND } from "./commands.js";
+import { ALL_COMMANDS } from "./commands.js";
 
 const rest = new REST().setToken(process.env.BOT_TOKEN);
-const commands = [BLACKJACK_COMMAND.data.toJSON(), BRICKBALL_COMMAND.data.toJSON()];
 
 // deploy commands!
 (async () => {
     try {
-        console.log(`Started refreshing ${commands.length} application (/) commands.`);
+        console.log(`Started refreshing ${ALL_COMMANDS.length} application (/) commands.`);
 
         // The put method is used to fully refresh all commands in the guild with the current set
         const data = await rest.put(
             Routes.applicationGuildCommands(process.env.APP_ID, process.env.GUILD_ID),
-            { body: commands },
+            { body: ALL_COMMANDS },
         );
 
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);

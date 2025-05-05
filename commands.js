@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 import { BRICKBALL_ANSWERS } from './brickball-answers.js';
 
-export const BLACKJACK_COMMAND = {
+const BLACKJACK_COMMAND = {
     data: new SlashCommandBuilder()
         .setName('bj')
         .setDescription('BlackJack'),
@@ -19,7 +19,7 @@ export const BLACKJACK_COMMAND = {
     }
 }
 
-export const BRICKBALL_COMMAND = {
+const BRICKBALL_COMMAND = {
     data: new SlashCommandBuilder()
         .setName('brickball')
         .setDescription('Magic 8 brick ball')
@@ -34,3 +34,5 @@ export const BRICKBALL_COMMAND = {
         await interaction.reply(`❓ **${question}**\n💬 **Answer:** ${answer}`);
     }
 }
+
+export const ALL_COMMANDS = [BLACKJACK_COMMAND, BRICKBALL_COMMAND].map(command => command.data.toJSON())
